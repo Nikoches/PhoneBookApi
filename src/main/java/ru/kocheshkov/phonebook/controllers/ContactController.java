@@ -1,13 +1,16 @@
 package ru.kocheshkov.phonebook.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.kocheshkov.phonebook.Exceptions.ContactAlreadyExistExeption;
+import ru.kocheshkov.phonebook.Exceptions.ContactNotFoundException;
+import ru.kocheshkov.phonebook.Exceptions.UserAlreadyExists;
+import ru.kocheshkov.phonebook.Exceptions.UserNotFoundException;
 import ru.kocheshkov.phonebook.domain.Contact;
+import ru.kocheshkov.phonebook.domain.User;
 import ru.kocheshkov.phonebook.repo.ContactsRepo;
 import ru.kocheshkov.phonebook.service.ContactsService;
+import ru.kocheshkov.phonebook.service.UsersService;
 
 import java.util.List;
 
@@ -16,10 +19,46 @@ import java.util.List;
 public class ContactController {
     @Autowired
     private ContactsService contactsService;
-
+    @Autowired
+    private UsersService usersService;
 
     @GetMapping("/contacts/{id}")
     List<Contact> getAllContactsByUserId(@PathVariable long id){
+        if(!usersService.userExistById(id)){
+            throw new UserNotFoundException(id);
+        }
        return contactsService.findAllContactsByUserId(id);
+    }
+    @PostMapping("/contacts")
+    Contact newContact(@RequestBody Contact contact) {
+        if (contactsService.contactExistById(contact.getId())) {
+            throw new ContactAlreadyExistExeption();
+        }
+        if(!usersService.userExistById(contact.getUser().getId())){
+            throw new UserNotFoundException(contact.getUser().getId());
+        }
+        return contactsService.saveContact(contact);
+    }
+    @PutMapping("/contacts/{id}")
+    Contact replaceContact(@RequestBody Contact newContact, @PathVariable Long id) {
+        if(!usersService.userExistById(id)){
+            throw new UserNotFoundException(id);
+        }
+        return contactsService.findById(id)
+                .map(contact -> {
+                    contact.setName(newContact.getName());
+                    contact.setNumber(newContact.getNumber());
+                    contact.setUser(newContact.getUser());
+                    return contactsService.saveContact(contact);
+                })
+                .orElseThrow(ContactNotFoundException::new);
+    }
+
+    @DeleteMapping("/contacts/{id}")
+    void deleteContact(@PathVariable Long id) {
+        if (!contactsService.contactExistById(id)) {
+            throw  new ContactNotFoundException();
+        }
+        contactsService.deleteContactById(id);
     }
 }

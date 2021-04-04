@@ -18,7 +18,6 @@ public class UserController {
 
     @GetMapping("/users")
     List<User> getAllUsers() {
-        List<User> users =userService.findAllUsers();
         return userService.findAllUsers();
     }
 
@@ -28,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    User newEmployee(@RequestBody User user) {
+    User newUser(@RequestBody User user) {
         if (userService.userExistById(user.getId())) {
             throw new UserAlreadyExists(user.getId());
         }
@@ -46,8 +45,8 @@ public class UserController {
                 .orElseThrow(() -> new UserNotFoundException(id));
     }
 
-    @DeleteMapping("/employees/{id}")
-    void deleteEmployee(@PathVariable Long id) {
+    @DeleteMapping("/users/{id}")
+    void deleteContact(@PathVariable Long id) {
         if (!userService.userExistById(id)) {
             throw new UserNotFoundException(id);
         }

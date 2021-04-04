@@ -21,7 +21,7 @@ VALUES ('albert einstein'),
        ('franz kafka');
 
 INSERT INTO contacts (name, number, user_id)
-VALUES ('charlz petzold', '8800555', 1),('charlz petzold', '8800555', 2),('charlz petzold', '8800555', 3);
+VALUES ('charlz petzold', '8800555', 1),('andrey streltsov', '8800555', 1),('charlz petzold', '8800555', 2),('charlz petzold', '8800555', 3);
 
 -- alter table users
 --     add constraint "fk_user_contacts"

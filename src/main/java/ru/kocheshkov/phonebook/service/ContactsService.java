@@ -9,6 +9,7 @@ import ru.kocheshkov.phonebook.repo.UsersRepo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -21,25 +22,20 @@ public class ContactsService {
     }
 
     public List<Contact> findAllContactsByUserId(long id) {
-        List<Contact> contacts = contactsRepo.findByUserId(id);
-
-        return new ArrayList<>(contactsRepo.findAll());
+        return contactsRepo.findByUserId(id);
     }
 
-//    public Optional<User> findUserById(long id) {
-//        return usersRepo.findById(id);
-//    }
-//
-//    public User saveUser(User user) {
-//        return usersRepo.save(user);
-//    }
-//
-//    public void deleteById(long id) {
-//        usersRepo.deleteById(id);
-//    }
-//
-//    public boolean userExistById(long id) {
-//        return usersRepo.existsById(id);
-//    }
-//}
+    public Optional<Contact> findById(long id){
+        return contactsRepo.findById(id);
+    }
+    public Contact saveContact(Contact contact){
+
+        return contactsRepo.save(contact);
+    }
+    public void deleteContactById(long id){
+        contactsRepo.deleteById(id);
+    }
+    public boolean contactExistById(long id){
+        return contactsRepo.existsById(id);
+    }
 }

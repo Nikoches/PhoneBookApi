@@ -6,11 +6,10 @@ import javax.persistence.*;
 @Table(name = "contacts")
 public class Contact {
     @Id
-    @GeneratedValue
     private long id;
     private String name;
     private String number;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne()
     private User user;
 
     public Contact() {
@@ -30,14 +29,6 @@ public class Contact {
     public void setUser(User user) {
         this.user = user;
     }
-//
-//    public long getUser_id() {
-//        return user_id;
-//    }
-
-//    public void setUser_id(long user_id) {
-//        this.user_id = user_id;
-//    }
 
     public long getId() {
         return id;
