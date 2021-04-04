@@ -33,4 +33,7 @@ public class UsersService {
     public boolean userExistById(long id ) {
         return usersRepo.existsById(id);
     }
+    public List<User> findAllUsersByName(String name){
+        return usersRepo.findAllByName(name);
+    }
 }

@@ -1,6 +1,7 @@
 package ru.kocheshkov.phonebook.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.kocheshkov.phonebook.domain.Contact;
 import ru.kocheshkov.phonebook.domain.User;
@@ -37,5 +38,8 @@ public class ContactsService {
     }
     public boolean contactExistById(long id){
         return contactsRepo.existsById(id);
+    }
+    public List<Contact> findByNumber(String number){
+        return contactsRepo.findContactByNumber(number);
     }
 }

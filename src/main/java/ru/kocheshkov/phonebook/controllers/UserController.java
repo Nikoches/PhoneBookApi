@@ -17,7 +17,7 @@ public class UserController {
     private UsersService userService;
 
     @GetMapping("/users")
-    List<User> getAllUsers() {
+    public List<User> getAllUsers() {
         return userService.findAllUsers();
     }
 
@@ -51,5 +51,9 @@ public class UserController {
             throw new UserNotFoundException(id);
         }
         userService.deleteById(id);
+    }
+    @GetMapping("/find/user")
+    List<User> findAllUsersByName(@RequestParam String name){
+       return userService.findAllUsersByName(name);
     }
 }

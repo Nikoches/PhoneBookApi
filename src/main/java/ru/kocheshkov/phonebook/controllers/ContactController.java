@@ -23,7 +23,7 @@ public class ContactController {
     private UsersService usersService;
 
     @GetMapping("/contacts/{id}")
-    List<Contact> getAllContactsByUserId(@PathVariable long id){
+    public List<Contact> getAllContactsByUserId(@PathVariable long id){
         if(!usersService.userExistById(id)){
             throw new UserNotFoundException(id);
         }
@@ -60,5 +60,10 @@ public class ContactController {
             throw  new ContactNotFoundException();
         }
         contactsService.deleteContactById(id);
+    }
+    @GetMapping("/find/contact")
+    List<Contact> getContactByNumber(@RequestParam String number) {
+
+        return contactsService.findByNumber(number);
     }
 }
